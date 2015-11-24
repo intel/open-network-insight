@@ -1,0 +1,2 @@
+parseddate	pcode	pcode	srcip	dstip	sport	dport	sfirst	dfirst	stotal	dtotal	spkts	dpkts
+2015-09-15 09:02:07	6	TCP	172.10.2.115	10.0.0.5	12899	80	151	432	321	602	3	3

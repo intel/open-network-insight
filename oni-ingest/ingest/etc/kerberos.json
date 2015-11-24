@@ -1,0 +1,7 @@
+{
+	"kinit_path":"kinit path",
+	"kinit_opts":"kinit opts",
+	"keytab_path":"keytab path",
+	"krb_user":"krb user"
+
+}

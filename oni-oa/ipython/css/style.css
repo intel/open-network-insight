@@ -1,0 +1,20 @@
+.navbar {
+    margin-bottom: 0px;
+    border-radius: 0px;
+    border: 0px none transparent;
+}
+
+.navbar-inverse{
+    background-color:#0071C5;    
+}
+
+.navbar-inverse .navbar-brand {
+    color: #ffffff;
+}
+.navbar-inverse .navbar-nav>li>a {
+    color: #ffffff;
+}
+.form-control-xs {
+    height: 23px;
+    font-size: 12px;
+}

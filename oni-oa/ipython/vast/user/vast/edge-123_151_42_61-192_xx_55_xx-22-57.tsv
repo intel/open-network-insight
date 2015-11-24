@@ -1,0 +1,2 @@
+parseddate	srcip	dstip	sport	dport	pcode	flags	tos	stotal	dtotal	input	output
+2015-09-18 22:57:45	123.151.42.61	192.55.55.41	12200	81	TCP	....S.	0	40	1	10	11

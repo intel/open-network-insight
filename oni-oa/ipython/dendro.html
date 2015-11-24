@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/custom.min.css" />
+    <style>
+        html {
+            overflow: hidden;
+        }
+
+        html, body, .container-fluid, .container-fluid > div, .container-fluid > div > div {
+            height: 100%;
+        }
+
+
+        body {
+            font-size: 12px;
+        }
+
+        .node circle {
+            fill: white;
+            stroke: #0071c5;
+            stroke-width: 1.5px;
+        }
+
+        .node {
+            font-size: 10px;
+        }
+
+        .link {
+            fill: none;
+            stroke: #b1babf;
+            stroke-width: 1.5px;
+        }
+
+        #attack_path[min-width~="800"] > svg > .node {
+            font-size: small;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">       
+        <div class="row">
+            <div class="col-lg-12 text-center" id="attack_path">
+            </div>
+        </div>
+    </div>
+    <script src="js/d3.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script>
+
+        /*
+            Document ready
+        */
+        $(function () {
+            buildGraph();
+
+            $(window).resize(function () {
+                //$("#attack_path").html("");
+                buildGraph();
+            });
+        });
+
+        /*
+            Creates the graph
+        */
+        function buildGraph(filePath, title) {
+            
+            $("#attack_path").html("");
+
+            if (filePath == "" || filePath == undefined || filePath == null) {
+                $("#attack_path").html('<p class="lead">Please select an incident from the Executive Threat Briefing list.</p>');
+                return;
+            }
+
+            //$("#threat_title").text(title);
+           
+            var width = $("#attack_path").width(),
+                height = $("#attack_path").height();
+
+            var cluster = d3.layout.cluster()
+                .size([height, width - 160]);
+
+            var diagonal = d3.svg.diagonal()
+                .projection(function (d) { return [d.y, d.x]; });
+
+            var fill = d3.scale.ordinal()
+                .domain(d3.range(4))
+                .range(["#000000", "#a6ce39", "#ffda00", "#ed1c24"]);
+
+            var svg = d3.select("#attack_path").append("svg")
+                .attr("width", width)
+                .attr("height", height)
+              .append("g")
+                .attr("transform", "translate(85,0)");
+
+            d3.json(filePath, function (error, root) {
+                if (error != null && error != undefined) {
+                    $('#attack_path').html('<p class="lead text-danger">Oops! looks like the data for this incident is missing.</p>');
+                    return;
+                }
+
+                var nodes = cluster.nodes(root),
+                    links = cluster.links(nodes);
+
+                var link = svg.selectAll(".link")
+                    .data(links)
+                  .enter().append("path")
+                    .attr("class", "link")
+                    .attr("d", diagonal);
+
+                var node = svg.selectAll(".node")
+                    .data(nodes)
+                  .enter().append("g")
+                    .attr("class", "node")
+                    .attr("transform", function (d) { return "translate(" + d.y + "," + d.x + ")"; })
+
+                node.append("circle")
+                    .attr("r", 9)
+                   .style("fill", function (d) { return fill(d.impact) });
+
+                node.append("text")
+                    .attr("dx", function (d) { return d.children ? -10 : 10; })
+                    .attr("dy", 3)
+                    .style("text-anchor", function (d) { return d.children ? "end" : "start"; })
+                    .text(function (d) { return d.name; });
+            });
+            
+        }
+    </script>
+
+</body>
+</html>

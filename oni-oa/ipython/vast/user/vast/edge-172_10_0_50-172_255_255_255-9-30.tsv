@@ -1,0 +1,2 @@
+parseddate	pcode	pcode	srcip	dstip	sport	dport	sfirst	dfirst	stotal	dtotal	spkts	dpkts
+2015-09-14 09:30:31	17	UDP	172.10.0.50	172.255.255.255	137	137	200	0	368	0	4	0

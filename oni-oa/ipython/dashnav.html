@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Security Analytics</title>
+    <link rel="stylesheet" href="css/custom.min.css" />
+    <style>
+        .padding0 {
+            padding: 0;
+        }
+
+        body {
+            font-size: 12px;
+        }
+
+        .top5 {
+            margin-top: 5px;
+        }
+        
+        .top10 {
+            margin-top: 10px;
+        }
+
+        .ptop4{
+            padding-top:4px;
+        }
+
+        .width100{
+            width:100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 top5">
+                <p>Below are the incidents/threats for the selected date:</p>
+            </div>
+            <div class="col-md-12 top5 text-center">
+                <div id="incident_list" class="btn-group-vertical width100" role="group" aria-label="Vertical button group">
+
+                </div>
+            </div>            
+        </div>
+        <div class="row top10">
+            <div class="col-md-12" id="comms">
+                <p id="comms"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-datepicker.min.js"></script>
+    <script src="js/d3.min.js"></script>
+
+    <script>
+
+        function getQueryString() {
+            var queryStringKeyValue = window.parent.location.search.replace('?', '').split('&');
+            var qsJsonObject = {};
+            if (queryStringKeyValue != '') {
+                for (i = 0; i < queryStringKeyValue.length; i++) {
+                    qsJsonObject[queryStringKeyValue[i].split('=')[0]] = queryStringKeyValue[i].split('=')[1];
+                }
+            }
+            return qsJsonObject;
+        }
+
+        function threatClick() {
+            var ip = $(this).data('ip');
+            var date = getQueryString().dataDate.replace(/-/g,"");
+            var barsPath = 'user/' + date + '/stats-' + ip.replace(/\./g, '_') + '.json';
+            var threatPath = 'user/' + date + '/threat_' + ip.replace(/\./g, '_') + '.csv';
+            var dendroPath = 'user/' + date + '/dendro-' + ip.replace(/\./g, '_') + '.json';
+            var globePath = 'user/' + date + '/globe_' + ip.replace(/\./g, '_') + '.json';
+            var timelinePath = 'user/' + date + '/sbdet-' + ip.replace(/\./g, '_') + '.tsv';
+            d3.csv(threatPath, function (error, data) {
+                if (error != null && error != undefined) {
+                    $("#comms").text("Oops!, We could not finde the details for this incident. Maybe the data does not exists.");
+                    return;
+                }
+                $("#comms").html('<strong>'+data[0].title+'</strong><br/>' + data[0].summary);
+            });
+
+            parent.document.getElementById('barsView').contentWindow.buildGraph(barsPath);
+            parent.document.getElementById('overheadView').contentWindow.buildGraph(dendroPath);
+            parent.document.getElementById('mapView').contentWindow.buildGraph(globePath);
+            parent.document.getElementById('timeView').contentWindow.buildGraph(timelinePath);
+            
+        }
+
+        $(function () {
+
+            //Get Threats for the selected day
+            var dataDate = getQueryString().dataDate;
+
+            if (dataDate != undefined && dataDate != null)
+                $("#date_picker").val(dataDate);
+            else {
+                $("#date_picker").val("2015-04-17");
+                getParam({ dataDate: $("#date_picker").val() });
+            }
+
+            $("#date_picker").datepicker({
+                format: "yyyy-mm-dd",
+                autoclose: true
+            })
+            .on("changeDate", function (e) {
+                getParam({ dataDate: $("#date_picker").val() });
+            });
+
+            var path = "user/" + dataDate.replace(/-/g, '') + "/threats.csv";
+
+            d3.csv(path, function (error, data) {
+                $("#incident_list").html("");
+                if (error != null && error != undefined) {
+                    $("#incident_list").append('<p class="lead">Oops!, Looks like there are no threats for this day</p>');
+                    return;
+                }
+                var threats = [];
+                data.forEach(function (d) {
+                    threats.push({
+                        ip: d.ip,
+                        threatTitle: d.threatTitle,
+                        html: '<button type="button" class="btn btn-default btn-sm" data-ip="' + d.ip + '">' + d.threatTitle + '</button>'
+                    });
+                });
+
+                
+
+                threats.forEach(function (t) {
+                    $("#incident_list").append(t.html);
+                });
+
+                $("#incident_list > button").click(threatClick);
+
+            });
+        });
+    </script>
+</body>
+</html>

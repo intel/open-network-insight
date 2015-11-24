@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+body {
+  font: 12px sans-serif;
+       	background-color:#ffffff;
+          padding:0px;
+          border:0px;
+}
+
+.chord path {
+  fill-opacity: .67;
+  stroke: #000;
+  stroke-width: .5px;
+}
+
+div {
+ 	font-size: small;
+}
+
+aside {background-color:lightblue}
+
+</style>
+<script charset="utf-8" src="js/d3.js"></script>
+<script>
+var matrix;
+//var matrix = [
+ // [11975,  5871, 8916, 2868],
+ //[ 1951, 10048, 2060, 6171],
+ //[ 8010, 16145, 8090, 8045],
+ //[ 1013,   990,  940, 6907]
+//];
+var csvpath = "user/vast/"
+csvfile = "port123.csv"
+
+function chord(csvfile) {
+//'user/bcurnutt/chord-172_10_0_3.csv'
+d3.text(csvpath+csvfile, function(error, _data) {
+
+	//d3.select("#container").html("");
+            var matrix = d3.csv.parseRows(_data);
+			for(var i=0; i<matrix[0].length; i++)
+			{
+				for(var j=0; j<matrix[1].length; j++)
+				{matrix[i][j] = +matrix[i][j] }
+			}
+
+var chord = d3.layout.chord()
+    .padding(.05)
+    .sortSubgroups(d3.descending)
+    .matrix(matrix);
+
+var width = 360,
+    height = 360,
+    innerRadius = Math.min(width, height) * .41,
+    outerRadius = innerRadius * 1.1;
+
+var fill = d3.scale.ordinal()
+    .domain(d3.range(4))
+    .range(["#000000", "#FFDD89", "#957244", "#F26223"]);
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+  .append("g")
+    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+svg.append("g").selectAll("path")
+    .data(chord.groups)
+  .enter().append("path")
+    .style("fill", function(d) { return fill(d.index); })
+    .style("stroke", function(d) { return fill(d.index); })
+    .attr("d", d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius))
+    .on("mouseover", fade(.1))
+    .on("mouseout", fade(1));
+
+var ticks = svg.append("g").selectAll("g")
+    .data(chord.groups)
+  .enter().append("g").selectAll("g")
+    .data(groupTicks)
+  .enter().append("g")
+    .attr("transform", function(d) {
+      return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")"
+          + "translate(" + outerRadius + ",0)";
+    });
+
+ticks.append("line")
+    .attr("x1", 1)
+    .attr("y1", 0)
+    .attr("x2", 5)
+    .attr("y2", 0)
+    .style("stroke", "#000");
+
+ticks.append("text")
+    .attr("x", 8)
+    .attr("dy", ".35em")
+    .attr("transform", function(d) { return d.angle > Math.PI ? "rotate(180)translate(-16)" : null; })
+    .style("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
+    .text(function(d) { return d.label; });
+
+svg.append("g")
+    .attr("class", "chord")
+  .selectAll("path")
+    .data(chord.chords)
+  .enter().append("path")
+    .attr("d", d3.svg.chord().radius(innerRadius))
+       .on("click", csvClick)
+    .style("fill", function(d) { return fill(d.target.index); })
+    .style("opacity", 1);
+
+
+
+// Returns an array of tick angles and labels, given a group.
+function groupTicks(d) {
+  var k = (d.endAngle - d.startAngle) / d.value;
+  return d3.range(0, d.value, 10000000).map(function(v, i) {
+    return {
+      angle: v * k + d.startAngle,
+      //label: i % 10 ? null : v/10 // v/1000
+     label: Math.round(d.value)
+    };
+  });
+}
+
+// Returns an event handler for fading a given chord group.
+function fade(opacity) {
+  return function(g, i) {
+    svg.selectAll(".chord path")
+        .filter(function(d) { return d.source.index != i && d.target.index != i; })
+      .transition()
+        .style("opacity", opacity);
+  };
+}
+
+});
+
+};
+
+	function csvClick(d) {
+				parent.document.getElementById('detailView').contentWindow.location.assign('auto_details.html');
+				var fpath = "details" + ".tsv"
+				//alert(fpath)
+				parent.document.getElementById('detailView').contentWindow.details(fpath);
+				return;
+
+  	}
+
+</script>
+<body>
+
+<aside>Zoom and Filter: Flow Chord Diagram</aside>
+<div id="container">
+</div><br>
+<div>Each chord in the diagram represents the communication from one IP address to another on the specified port.
+<ul><li>Each band on the outer circle is a unique IP address.</li>
+<li>The width of the band corresponds to the amount of byte traffic in the flow.</li>
+<li>Colors are rotated to make patterns more visible, it has no other meaning.</li>
+</ul></div>

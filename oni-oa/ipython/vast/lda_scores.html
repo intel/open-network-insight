@@ -1,0 +1,110 @@
+<html>
+<style>
+
+table {
+	width: 100%;
+}
+
+td, th {
+    padding: 2px 4px;
+    border: 1px;
+}
+
+th {
+    font-weight: bold;
+    text-align:left;
+}
+
+body {
+	font-size: 12 px;
+	font-family: arial,sans-serif;
+}
+
+div {
+ 	font-size: small;
+}
+
+aside {background-color:#0071C5; color:#FFFFFF}
+
+</style>
+    <script type="text/javascript" src="js/d3.min.js"></script>
+
+
+<body>
+<aside>Suspicious Connects (showing top 150)</aside>
+<div id="trainingtext" class="training">Suspicious connections are listed below in ranked order.  Mouse over a
+connection to highlight it in the connection graph on the right.  <b>Click the connection</b> to generate all the log details in the detail
+view.</div>
+    <script type="text/javascript">
+	var csvpath = "user/vast/lda_scores.csv";
+	var coff = 150;
+
+ d3.csv(csvpath, function(data) {
+     // the columns you'd like to display
+
+
+    // var columns = ["Date","srcIP","dstIP","SPort","DPort","Sfirst","Dfirst","Stotal","Dtotal","Spkts","Dpkts"];
+     var columns = ["Date","srcIP","dstIP","SPort","DPort","Stotal","Dtotal"];
+    //may need to clear div first
+     var table = d3.select("#container").append("table")
+     			.style('font-size', function(d) { return 'small'; }),
+         thead = table.append("thead"),
+         tbody = table.append("tbody");
+
+     // append the header row
+     thead.append("tr")
+         .selectAll("th")
+         .data(columns)
+         .enter()
+         .append("th")
+             .text(function(column) { return column; });
+
+     // create a row for each object in the data
+     var rows = tbody.selectAll("tr")
+         .data(data.filter(function(d,i) {if ( i < coff) return d}))
+         .enter()
+         .append("tr")
+         		.attr("id", function(d, i) { return ("row_" + i)})
+              //.on("mouseover", edgeSelect)
+              .on("click", csvClick);
+
+
+     // create a cell in each row for each column
+     var cells = rows.selectAll("td")
+         .data(function(row) {
+             return columns.map(function(column) {
+                 return {column: column, value: row[column]};
+             });
+         })
+         .enter()
+         .append("td")
+             .text(function(d) {return d.value; });
+
+
+});
+
+		function edgeSelect(d) {
+				//
+				parent.document.getElementById('vizView').contentWindow.highlightEdge("k"+d.srcIP.replace(/\./g,"_")+"-"+
+					d.srcIP.replace(/\./g,"_"));
+					//alert("k"+d.srcIP.replace(/\./g,"_")+"-"+ d.srcIP.replace(/\./g,"_"));
+				parent.document.getElementById('vizView').contentWindow.highlightEdge("k"+d.dstIP.replace(/\./g,"_")+"-"+d.srcIP.replace(/\./g,"_"));
+
+		}
+
+	function csvClick(d) {
+				//d3.select("tr#row_" + id).classed('.active',false);
+				//d3.select("tr#row_" + id).classed('.active',true);
+				var fpath = "edge-" + d.srcIP.replace(/\./g,"_") + "-" +
+				d.dstIP.replace(/\./g,"_") +"-"+d.Date.split(' ')[1].split(':')[0] +"-"+d.Date.split(' ')[1].split(':')[1] + ".tsv"
+				//alert(fpath)
+				parent.document.getElementById('detailView').contentWindow.details(fpath);
+				return;
+
+  	}
+</script>
+<div id="container">
+
+</div>
+</body>
+</html>

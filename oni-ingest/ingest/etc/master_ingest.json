@@ -1,0 +1,18 @@
+{
+	"dns":{	
+		
+		"collector_path":"/mnt/sec_shared.nfs/dns",
+		"pkt_num":"650000",
+		"pcap_split_staging":"/mnt/sec_shared.nfs/dns",
+		"time_to_wait":3600,
+		"queue_name":"dns_ingest_queue"
+
+	},
+
+	"flow":{
+
+		"collector_path":"/mnt/sec_shared.nfs/nfcapd",
+                "queue_name":"flow_ingest_queue"
+
+	}
+}
