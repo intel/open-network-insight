@@ -1,7 +1,7 @@
 <html>
 <head>
     <title>Suspicious Connects LDA-Scores</title>
-    <link rel="stylesheet" type="text/css" href="css/custom.min.css">
+    <link rel="stylesheet" type="text/css" href="css/custom.min.css">    
     <style>
             table {
                 width: 100%;
@@ -106,7 +106,7 @@
                     <p class="small">
                         DNS Suspicious connections are listed below in ranked order.  Mouse over a
                         connection to highlight it in the connection graph on the right.  Click the connection to generate all the log details in the detail
-                        view.
+                        view.                       
                     </p>
                 </div>
             </div>
@@ -117,7 +117,7 @@
     </div>
     <script type="text/javascript">
 
-        var norseRisks = {
+        var norseRisks = {         
             low: 0,
             medium: 1,
             high: 2,
@@ -128,7 +128,7 @@
             low: 0,
             //unverified: 0,
             medium: 1,
-            high:2
+            high:2            
         }
 
         var defaultPath = "vast/"
@@ -141,7 +141,7 @@
         else
             csvpath = csvpath + defaultPath;
 
-        csvpath = csvpath + "/dns_scores.csv"
+        csvpath = csvpath + "/dns_lda_scores.csv"
 
         var minSconnects = 0;
 
@@ -283,7 +283,7 @@
                         return getDnsRespClass(d.value);
 
                     return d.value;
-                 });
+                 });                       
 
         }
 
@@ -310,10 +310,10 @@
            Gets triggered when the user mouse over a sconnect row. It calls the highlightEdge function for the sconnects_netflow.html file (Network View)
         */
         function highlightEdge(d) {
-
+            
             parent.document.getElementById('vizView').contentWindow.highlightEdge("k" + getDnsNodeName(d.dns_resp_name).replace(/\./g, "_") + "-" +
                 d.ip_dst.replace(/\./g, "_"));
-
+                
         }
 
         /*
@@ -329,8 +329,8 @@
             of the Network view file to blink the selected edge and nodes
         */
         function csvClick(d) {
-
-
+            
+            
             var fpath = "edge-" + getDnsNodeName(d.dns_resp_name).replace(/\./g, "_") + "-" +
             d.ip_dst.replace(/\./g, "_") + "-" + d.frame_time.split(' ')[1].split(':')[0] + "-" + d.frame_time.split(' ')[1].split(':')[1] + ".tsv"
 
@@ -344,7 +344,7 @@
                 d.ip_dst.replace(/\./g, "_"));
 
             return;
-
+            
         }
 
 

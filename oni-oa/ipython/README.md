@@ -7,7 +7,6 @@ Some of the technologies used are:
  - [D3js](http://d3js.org/)
  - [JQuery](https://jquery.com/)
  - [Boostrap](http://getbootstrap.com/)
- - [IT MLAF v3](https://mlaf.intel.com/#/)
 
 
 ----------

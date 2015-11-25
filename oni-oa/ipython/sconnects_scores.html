@@ -1,9 +1,9 @@
 <html>
 <head>
-    <title>Suspicious Connects LDA-Scores</title>
+    <title>Suspicious Connects LDA-Scores</title>    
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="css/custom.min.css">
-
+    <link rel="stylesheet" type="text/css" href="css/custom.min.css">    
+       
     <style>
             table {
                 width: 100%;
@@ -120,7 +120,7 @@
     </div>
     <script type="text/javascript">
 
-        var norseRisks = {
+        var norseRisks = {         
             low: 0,
             medium: 1,
             high: 2,
@@ -131,7 +131,7 @@
             low: 0,
             //unverified: 0,
             medium: 1,
-            high:2
+            high:2            
         }
 
         var defaultPath = "vast"
@@ -144,7 +144,7 @@
         else
             csvpath = csvpath + defaultPath;
 
-        csvpath = csvpath + "/flow_scores.csv"
+        csvpath = csvpath + "/lda_scores.csv"
 
         var minSconnects = 0;
 
@@ -238,7 +238,7 @@
 
                      if ( isSrcIpInternal || isDstIpInternal) {
 
-                         var html = d.value + ' <i class="fa fa-globe float-right ip-info"></i>';
+                         var html = d.value + ' <i class="fa fa-globe float-right ip-info"></i>';                               
                          var shieldClass = "low-risk";
                          var norseRisk = 0
                          var gtiRisk = 0;
@@ -335,8 +335,8 @@
 
                     var gtiText, norseText, gtiClass, norseClass;
 
-                    if (gtiReputation != "" && gtiReputation != undefined && gtiReputation != null && (gtiReputation.indexOf('error') == -1)) {
-                        gtiReputation = +gtiReputation;
+                    if (gtiReputation != "" && gtiReputation != undefined && gtiReputation != null && (gtiReputation.indexOf('error') == -1)) {                                            
+                        gtiReputation = +gtiReputation;                      
                         if (gtiReputation < 15) { // low Risk
                             gtiText = "Low";
                             gtiClass = "label label-default";
@@ -353,7 +353,7 @@
                             gtiText = "High";
                             gtiClass = 'label label-danger';
                         }
-
+                        
                     }
                     else {
                         gtiText = "Risk undefined";

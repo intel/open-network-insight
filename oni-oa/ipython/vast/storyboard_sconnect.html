@@ -1,63 +1,42 @@
 <html>
 <head>
     <title>Security Analytics</title>
-    <link rel="stylesheet" href="css/it-mlaf.css" />
+    <!--CDN for font awesome ICONS-->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/custom.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <!--Bootstrap Date picker styles-->
+    <link rel="stylesheet" href="css/bootstrap-datepicker3.min.css" />  
     <style>
-        iframe {
+       iframe {
             border: 1px solid #b1babf;
-            border-top: none;
-            /*background-color: #edeff0;*/
+            border-top: none;           
         }
 
-        .overhead {
-            /*float: top;*/
+        .overhead {           
             width: 100%;
-            height: 250px;
-            /*padding: 0px;
-            border: 0px;
-            scrolling: false;*/
+            height: 250px;           
         }
 
-        .detail {
-            /*float:left;*/
-            /*position: fixed;
-            left: 0px;*/
-            width: 100%;
-            /*top: 275px;*/
+        .detail {            
+            width: 100%;            
             min-height: 250px;
-            max-height: 350px;
-            /*padding: 0px;
-            border: 0px;*/
+            max-height: 350px;            
         }
 
-        .bars {
-            /*position: fixed;
-            left: 850px;*/
-            width: 100%;
-            /*top: 0px;*/
-            height: 250px;
-            /*padding: 0px;
-            border: 0px;*/
+        .bars {            
+            width: 100%;            
+            height: 250px;            
         }
 
-        .map {
-            /*position: fixed;
-            left: 400px;*/
-            width: 100%;
-            /*top: 275px;*/
-            height: 450px;
-            /*padding: 0px;
-            border: 0px;*/
+        .map {            
+            width: 100%;            
+            height: 450px;            
         }
 
-        .time {
-            /*position: fixed;*/
-            /*left: 850px;*/
-            width: 100%;
-            /*top: 200px;*/
-            height: 450px;
-            /*padding: 0px;
-            border: 0px;*/
+        .time {            
+            width: 100%;            
+            height: 450px;            
         }
 
         .accent-light-blue {
@@ -74,10 +53,8 @@
 
         .header-title {
             float: left;
-            font-size: 16px;
-            /*line-height: 30px;*/
-            margin: 4px 0;
-            /*padding: 0 15px;*/
+            font-size: 16px;            
+            margin: 4px 0;            
         }
 
         .rounded {
@@ -94,21 +71,83 @@
         .padding0 {
             padding: 0;
         }
+
+         #date {
+            border-left: 1px solid #00AEEF;
+        }
+
+        #collapse_box, #filters_box, #filters_box > div {
+            height: auto;
+        }
+
+        .bg-default {
+            background-color: #edeff0;
+        }
+
+        .pd-top-btm5 {
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+     
+        .form-control-xs {
+            height: 23px;
+            font-size:12px;
+        }
+
+        .container-fluid {
+            overflow-y: auto;
+        }
+
+        .header-title {
+            float: left;
+            font-size: 16px;
+            margin: 4px 0;
+        }
+
+         body {
+            font-size: 12px;
+            /*overflow: hidden;*/
+        }
+
+        .ptop4{
+            padding-top:4px;
+        }
     </style>
 </head>
 <body>
-    <div class="header-intel navbar navbar-intel">
-        <img class="navbar-logo" src="images/intel-logo-white-100.png" alt="">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <div class="navbar-header pull-left">
-            <a class="navbar-brand" href="#">Intel&reg; Threat Intelligence | With Network Flows</a>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <!-- App name and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Open Network Insight</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+                <ul class="nav navbar-nav navbar-right">
+                    <li id="detect"><a href="index_sconnects.html">Flow Suspicious Connects</a></li>
+                    <li id="ntIngest"><a href="index_ingest.html">Flow Ingest</a></li>
+                </ul>
+            </div>
+            <div class="row bg-default text-right" id="collapse_box">
+                <!--Tools Buttons-->
+                <div class="col-md-12 pd-top-btm5">
+                    <div class="col-md-12 form-inline">
+                        <div class="form-group">
+                            <label for="date_picker" class="control-label">Data Date:</label>
+                            <input placeholder="Data date" type="text" id="date_picker" class="form-control form-control-xs" />
+                            <a href=""><i class="fa fa-refresh"></i></a>
+                        </div><!--/form-group-->
+                    </div>
+                </div>
+            </div> <!-- /Tools Buttons-->
         </div>
-    </div>
-
+    </nav>
 
     <div class="container-fluid">
         <!--Main Section Container Row-->
@@ -123,11 +162,11 @@
                             <div class="col-lg-8">
                                 <span class="header-title">Executive Threat Briefing</span>
                             </div>
-                            <div class="col-lg-4 text-right">
+                            <div class="col-lg-4 text-right ptop4">
                                 <button class="btn btn-default btn-xs toggle-section" data-target="#exec_threat_brf">Full screen</button>
                             </div>
                         </div>
-                        <iframe name="detailView" id="detailView" class="detail" src="dashnav.html"></iframe>
+                        <iframe name="threatNav" id="threatNav" class="detail" src="dashnav.html"></iframe>
                     </div>
                     <!--SECTION bar chart view-->
                     <div class="col-lg-12 padding2 section4" id="bars_view">
@@ -135,13 +174,11 @@
                             <div class="col-lg-8">
                                 <span class="header-title">Impact Analysis</span>
                             </div>
-                            <div class="col-lg-4 text-right">
+                            <div class="col-lg-4 text-right ptop4">
                                 <button class="btn btn-default btn-xs toggle-section" data-target="#bars_view">Full screen</button>
                             </div>
                         </div>
-                        <!--<header class="intel-header-section intel-border-pale-blue" style="margin-bottom:0;">
-                            <span class="intel-header-section-title">Bars View</span>
-                        </header>-->
+                       
                         <iframe name="mapView" id="barsView" target="barsView" class="bars" src="bars.html"></iframe>
                     </div>
                 </div>
@@ -154,13 +191,11 @@
                             <div class="col-lg-8">
                                 <span class="header-title">Incident Progression</span>
                             </div>
-                            <div class="col-lg-4 text-right">
+                            <div class="col-lg-4 text-right ptop4">
                                 <button class="btn btn-default btn-xs toggle-section" data-target="#incident_prog">Full screen</button>
                             </div>
                         </div>
-                        <!--<header class="intel-header-section intel-border-pale-blue" style="margin-bottom:0;">
-                            <span class="intel-header-section-title">Executive Threat Briefing</span>
-                        </header>-->
+                      
                         <iframe name="overheadView" id="overheadView" target="overheadView" class="overhead" src="dendro.html" scrolling="no"></iframe>
                     </div>
                     <!--SECTION Map Globe-->
@@ -169,14 +204,10 @@
                             <div class="col-lg-8">
                                 <span class="header-title">Map View | Globe</span>
                             </div>
-                            <div class="col-lg-4 text-right">
+                            <div class="col-lg-4 text-right ptop4">
                                 <button class="btn btn-default btn-xs toggle-section" data-target="#globe">Full screen</button>
                             </div>
-                        </div>
-                        <!--<header class="intel-header-section intel-border-pale-blue" style="margin-bottom:0;">
-                            <span class="intel-header-section-title">Map View</span>
-                            <span class="intel-header-section-subtitle">Globe</span>
-                        </header>-->
+                        </div>                     
                         <iframe name="mapView" id="mapView" target="mapView" class="map" src="globe.html" scrolling="no"></iframe>
                     </div>
                     <!--SECTION Timeline-->
@@ -185,13 +216,10 @@
                             <div class="col-lg-8">
                                 <span class="header-title">Timeline</span>
                             </div>
-                            <div class="col-lg-4 text-right">
+                            <div class="col-lg-4 text-right ptop4">
                                 <button class="btn btn-default btn-xs toggle-section" data-target="#timeline">Full screen</button>
                             </div>
-                        </div>
-                        <!--<header class="intel-header-section intel-border-pale-blue" style="margin-bottom:0;">
-                            <span class="intel-header-section-title">Timeline</span>
-                        </header>-->
+                        </div>                      
                         <iframe name="timeView" id="timeView" target="timeView" class="time" src="timeline.html" scrolling="no"></iframe>
                     </div>
                 </div>
@@ -200,9 +228,66 @@
     </div>
 
     <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-datepicker.min.js"></script> 
 
     <script>
+
+        function getParam(params) {
+            var obj = {}, i, parts, len, key, value;
+
+            if (typeof params === 'string') {
+                value = location.search.match(new RegExp('[?&]' + params + '=?([^&]*)[&#$]?'));
+                return value ? value[1] : undefined;
+            }
+
+            var _params = location.search.substr(1).split('&');
+
+            for (i = 0, len = _params.length; i < len; i++) {
+                parts = _params[i].split('=');
+                if (!parts[0]) { continue; }
+                obj[parts[0]] = parts[1] || true;
+            }
+
+            if (typeof params !== 'object') { return obj; }
+
+            for (key in params) {
+                value = params[key];
+                if (typeof value === 'undefined') {
+                    delete obj[key];
+                } else {
+                    obj[key] = value;
+                }
+            }
+
+            parts = [];
+            for (key in obj) {
+                parts.push(key + (obj[key] === true ? '' : '=' + obj[key]));
+            }
+
+            location.search = parts.join('&');
+        };
+
         $(function () {
+            var dataDate = getParam("dataDate");
+
+            if (dataDate != undefined && dataDate != null) {
+                $("#date_picker").val(dataDate);
+                $("#detect > a").attr('href', "index_sconnects.html?dataDate=" + dataDate.replace(/-/g, ""));
+            }
+            //else {
+            //    $("#date_picker").val("2015-04-17");
+            //    getParam({ dataDate: $("#date_picker").val() });
+            //}
+
+            $("#date_picker").datepicker({
+                format: "yyyy-mm-dd",
+                autoclose: true
+            })
+            .on("changeDate", function (e) {
+                getParam({ dataDate: $("#date_picker").val() });
+            });
+
             $(".toggle-section").click(toggleSection);
 
         });

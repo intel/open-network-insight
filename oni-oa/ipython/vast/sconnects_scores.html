@@ -1,8 +1,9 @@
 <html>
 <head>
     <title>Suspicious Connects LDA-Scores</title>
-    <link rel="stylesheet" type="text/css" href="css/it-mlafv3.css">
-    <link rel="stylesheet" type="text/css" href="css/bootstrap-slider.min.css">
+    <!--CDN for font awesome ICONS-->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/custom.min.css">    
     <style>
             table {
                 width: 100%;
@@ -92,9 +93,7 @@
             .extreme-risk{
                 color:#ed1c24;
             }
-            .intelicon-world{
-                /*visibility:hidden;*/
-            }
+            
     </style>
     <script src="js/d3.min.js"></script>
     <script src="js/jquery.min.js"></script>
@@ -242,7 +241,7 @@
 
                      if ( isSrcIpInternal || isDstIpInternal) {
 
-                         var html = d.value + ' <i class="intelicon-world float-right ip-info"></i>';                               
+                         var html = d.value + ' <i class="fa fa-globe float-right ip-info"></i>';                               
                          var shieldClass = "low-risk";
                          var norseRisk = 0
                          var gtiRisk = 0;
@@ -283,7 +282,7 @@
                          else
                              shieldClass = Object.keys(norseRisks)[norseRisk] + "-risk";
 
-                         html += ' <i class="intelicon-protection-solid float-right reputation ip-info '+shieldClass+'"></i>';
+                         html += ' <i class="fa fa-shield float-right reputation ip-info '+shieldClass+'"></i>';
                          return html;
                      }
 
@@ -291,7 +290,7 @@
 
                  });
 
-            d3.selectAll('.intelicon-world')
+            d3.selectAll('.fa-globe')
                 .on("mouseover", function () {
                     data = d3.select($(this).parent()[0]).data()[0]; // Get data from parent TD
 

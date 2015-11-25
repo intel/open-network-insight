@@ -5,11 +5,10 @@
     <!--CDN for font awesome ICONS-->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <!--IT MLAF Styles Sheet (Based on bootstrap)-->
-    <link rel="stylesheet" type="text/css" href="css/it-mlafv3.css" />
+    <link rel="stylesheet" type="text/css" href="css/custom.min.css" />
     <!--Bootstrap Date picker styles-->
-    <link rel="stylesheet" href="css/bootstrap-datepicker3.min.css" />
-    <!--Slider-->
-    <link rel="stylesheet" href="css/bootstrap-slider.min.css" />
+    <link rel="stylesheet" href="css/bootstrap-datepicker3.min.css" />   
+    <link rel="stylesheet" href="css/style.css" />   
     <style>
         html {
             /*height: 100%;*/
@@ -176,7 +175,7 @@
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <!-- App name and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -185,9 +184,8 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
-                </button>
-                <img class="navbar-logo" src="images/intel-logo-white-100.png" alt="">
-                <a class="navbar-brand" href="#">Intel&reg; Threat Intelligence | With Netflows</a>
+                </button>                
+                <a class="navbar-brand" href="#">Open Network Insight</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
@@ -203,23 +201,18 @@
                 <div class="col-md-12 pd-top-btm5">
                     <div class="col-md-12 form-inline">
                         <div class="form-group">
-                            <!--<label class="control-label">
-                                <i class="intelicon-help-outlined tip" title="Move the slider to the right or left to filter the data by range."></i>
-                                Viewing records from: <span style="padding-right:10px;" id="minDataRangeVal"></span> To: <span style="padding-right:10px;" id="maxDataRangeVal"></span>
-                            </label>
-                            <input type="text" class="form-control" id="dataRange" />-->
-
+                           
                             <label for="ip_filter" class="control-label">IP Address:</label>
                             <div class="input-group">
                                 <span class="input-group-btn">
-                                    <button class="btn btn-primary btn-xs tip" type="button" id="btn_searchIp" title="Enter an IP Address and click the search button to filter the results."><i class=" intelicon-search"></i></button>
+                                    <button class="btn btn-primary btn-xs tip" type="button" id="btn_searchIp" title="Enter an IP Address and click the search button to filter the results."><i class=" fa fa-search"></i></button>
                                 </span>
                                 <input type="text" id="ip_filter" class="form-control form-control-xs" placeholder="0.0.0.0">
                             </div><!-- /input-group -->
-                            <button class=" btn btn-default btn-xs tip" title="Reset IP filter" id="reset_ip_filter"><i class="intelicon-undo"></i></button>
+                            <button class=" btn btn-default btn-xs tip" title="Reset IP filter" id="reset_ip_filter"><i class="fa fa-undo"></i></button>
                             <label for="date_picker" class="control-label">Data Date:</label>
                             <input placeholder="Data date" type="text" id="date_picker" class="form-control form-control-xs" />
-                            <a href="#"><i class="intelicon-refresh"></i></a>
+                            <a href="#"><i class="fa fa-refresh"></i></a>
                         </div><!--/form-group-->
                     </div>
                 </div>
@@ -383,8 +376,8 @@
             $("#maxDataRangeVal").text(maxSconnects);
 
             $("#btn_filters").click(function () {
-                $(this).children(":first-child").toggleClass("intelicon-down");
-                $(this).children(":first-child").toggleClass("intelicon-up");
+                $(this).children(":first-child").toggleClass("fa-angle-down");
+                $(this).children(":first-child").toggleClass("fa-angle-up");
             });
 
             $("#ip_filter").on("change", function () {
