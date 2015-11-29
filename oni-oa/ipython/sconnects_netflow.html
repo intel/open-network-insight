@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Netflow</title>
-    <link rel="stylesheet" type="text/css" href="css/custom.min.css">
+    <title>Netflow</title>    
+    <link rel="stylesheet" type="text/css" href="css/custom.min.css">    
     <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">-->
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -227,7 +227,7 @@
 
             sourceIpNodeId = sourceIpNodeId || null;
 
-            targetIpNodeId = targetIpNodeId || null;
+            targetIpNodeId = targetIpNodeId || null;           
 
             var csvpath = "user/"
 
@@ -236,7 +236,7 @@
             else
                 csvpath = csvpath + defaultPath;
 
-            csvpath = csvpath + "/flow_scores.csv"
+            csvpath = csvpath + "/lda_scores.csv"
 
             if (ldaScoresData.length > 0) {
                 filterDataAndBuildGraph(selectedEdgeId, sourceIpNodeId, targetIpNodeId, ldaScoresData);
@@ -253,8 +253,8 @@
         }
 
         function filterDataAndBuildGraph(selectedEdgeId, sourceIpNodeId, targetIpNodeId, data) {
-            //Get the nodes from the data
-
+            //Get the nodes from the data          
+            
             if (ipFilter != null && ipFilter != undefined && ipFilter != "") {
                 data = data.filter(function (d) { return ipFilter == d.srcIP || ipFilter == d.dstIP; })
             }
@@ -266,7 +266,7 @@
             .map(function (d) {
                 return { ip: d.srcIP, isInternal: +d.srcIpInternal };
             })
-
+            
             var nodes_2 = data.filter(function (d, i) {
                 if (i >= minSconnects && i < maxSconnects && d.sev == 0)
                     return d;
@@ -301,7 +301,7 @@
                 if (edgeIsSuspect(d)) {
                    nodes[d.source].degree = nodes[d.source].degree + 1 || 1;
                    nodes[d.target].degree = nodes[d.target].degree + 1 || 1;
-
+                   
                 }
             });
 
@@ -323,7 +323,7 @@
                                         d3.rgb(237, 98, 36),
                                         d3.rgb(237, 138, 36),
                                         d3.rgb(237, 168, 36),
-                                        d3.rgb(237, 198, 36)]);
+                                        d3.rgb(237, 198, 36)]);            
 
             var linkStrength = d3.scale.threshold()
                                  .domain([13])
@@ -372,8 +372,8 @@
                             .classed('node-label', true);
 
             // GROUP and append the nodes to the main SVG
-
-
+           
+            
             var node = svg.append('g')
                          .selectAll('.node')
                          .data(nodes.filter(function (d) { return d.degree > 0; }))
@@ -422,7 +422,7 @@
 
                             })
                            .on('mouseout', function () { tooltip.style('visibility', 'hidden'); });
-
+                           
             // set the tick event listener for the force
             force.on('tick', function () {
 
@@ -430,10 +430,10 @@
                     .attr("y1", function (d) { return d.source.y; })
                     .attr("x2", function (d) { return d.target.x; })
                     .attr("y2", function (d) { return d.target.y; });
-
+                
                 /*node.attr('cx', function (d) { return d.x = Math.max(r, Math.min(w - r, d.x)); })
                     .attr('cy', function (d) { return d.y = Math.max(r, Math.min(h - r, d.y)); });
-                  */
+                  */  
                 node.attr('transform', function (d) {
                     d.x = Math.max(r, Math.min(w - r, d.x));
                     d.y = Math.max(r, Math.min(h - r, d.y));
@@ -561,7 +561,7 @@
                 var targetIpNodeId = selectedEdgeId != null ? "n" + d3.select("#" + selectedEdgeId).data()[0].target.ip.replace(/\./g, "_") : null;
                 $('#graph > svg').remove();
 
-
+               
 
                 if (ipFilter != "" && ipFilter != undefined && ipFilter != null) {
                     filterDataByIpAndDrawTable(ipFilter);
