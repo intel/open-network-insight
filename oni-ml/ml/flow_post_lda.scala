@@ -53,7 +53,7 @@ val scored_output_file = System.getenv("HPATH") + "/scored"
 val threshold : Double = system.getenv("TOL").toDouble
 
 
-val cuts_input = system.getenv("CUT")
+val cuts_input = System.getenv("CUT")
 var ibyt_cuts : Array[Double] = cuts_input.split(",")(0).split(" ").map(_.toDouble)
 var ipkt_cuts : Array[Double] = cuts_input.split(",")(1).split(" ").map(_.toDouble)
 var time_cuts : Array[Double] = cuts_input.split(",")(2).split(" ").map(_.toDouble)
