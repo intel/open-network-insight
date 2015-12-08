@@ -1,10 +1,11 @@
 #!/bin/env python
 
-import json
+
 import os
 import subprocess
+import sys
 
-class kerberos(object):
+class Kerberos(object):
 
 	_script_path = None
 	_conf_file = None
@@ -17,19 +18,19 @@ class kerberos(object):
 
 	def __init__(self):
 
-		#self._script_path = os.path.dirname(os.path.abspath(__file__))
-		#self._conf_file = "{0}/etc/kerberos.json".format(self._script_path)
-		#print self._conf_file
-		#self._kerberos_conf = json.loads(open (self._conf_file).read())
+		self._kinit =  os.getenv('KINITPATH')
+		self._kinitopts =  os.getenv('KINITOPTS')
+		self._keytab =  os.getenv('KEYTABPATH')
+		self._krb_user =  os.getenv('KRB_USER')
 
-		self._kinit =  os.environ['KINITPATH']
-		self._kinitopts =  os.environ['KINITOPTS']
-		self._keytab =  os.environ['KEYTABPATH']
-		self._krb_user =  os.environ['KRB_USER']
+
+                if self._kint == None or self._kinitopts == None or self._keytab == None or self._krb_user == None:
+                        print "Please verify kerberos configuration, some environment variables are missing."
+                        sys.exit(1)
 
 		self._kinit_args = [self._kinit,self._kinitopts,self._keytab,self._krb_user]
 
-	def authenticate(self):	
+	def authenticate(self):
 
 		kinit = subprocess.Popen(self._kinit_args, stderr = subprocess.PIPE)
 		output,error = kinit.communicate()
@@ -39,4 +40,4 @@ class kerberos(object):
 				sys.exit(kinit.returncode)
 		print "Successfully authenticated!"
 
-		
+
