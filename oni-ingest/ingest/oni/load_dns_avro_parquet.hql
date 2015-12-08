@@ -25,7 +25,7 @@ CREATE EXTERNAL TABLE ${hiveconf:dbname}.dns_tmp (
   )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
 STORED AS TEXTFILE
-LOCATION ${hiveconf:data_location}
+LOCATION '${hiveconf:data_location}'
 TBLPROPERTIES ('avro.schema.literal'='{
     "type":   "record"
   , "name":   "RawDnsRecord"
