@@ -3,7 +3,7 @@ SET hiveconf:y;
 SET hiveconf:m;
 SET hiveconf:d;
 SET hiveconf:h;
-SET hiveconf:dbname
+SET hiveconf:dbname;
 
 
 DROP TABLE IF EXISTS ${hiveconf:dbname}.flow_tmp
@@ -42,7 +42,7 @@ CREATE EXTERNAL TABLE ${hiveconf:dbname}.flow_tmp (
  )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
 STORED AS TEXTFILE
-LOCATION ${hiveconf:data_location}
+LOCATION '${hiveconf:data_location}'
 TBLPROPERTIES ('avro.schema.literal'='{
     "type":   "record"
   , "name":   "RawFlowRecord"

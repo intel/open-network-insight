@@ -1,7 +1,7 @@
 SET hiveconf:huser;
 SET hiveconf:dbname;
 
-CREATE EXTERNAL TABLE IF NOT EXISTS $dbname.flow (
+CREATE EXTERNAL TABLE IF NOT EXISTS ${hiveconf:dbname}.flow (
   treceived STRING,
   unix_tstamp BIGINT,
   dur FLOAT,
@@ -35,7 +35,7 @@ CREATE EXTERNAL TABLE IF NOT EXISTS $dbname.flow (
 PARTITIONED BY (y INT, m INT, d INT, h int)
 ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
 STORED AS PARQUET
-LOCATION '/user/$huser/flow/hive'
+LOCATION '/user/${hiveconf:huser}/flow/hive'
 TBLPROPERTIES ('avro.schema.literal'='{
     "type":   "record"
   , "name":   "FlowRecord"

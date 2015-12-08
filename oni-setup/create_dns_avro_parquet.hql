@@ -1,7 +1,7 @@
 SET hiveconf:huser;
 SET hiveconf:dbname;
 
-CREATE EXTERNAL TABLE IF NOT EXISTS $dbname.dns (
+CREATE EXTERNAL TABLE IF NOT EXISTS ${hiveconf:dbname}.dns (
   treceived STRING,
   unix_tstamp BIGINT,
   flen INT,
@@ -18,7 +18,7 @@ CREATE EXTERNAL TABLE IF NOT EXISTS $dbname.dns (
 PARTITIONED BY (y INT, m INT, d INT, h int)
 ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
 STORED AS PARQUET
-LOCATION '/user/$huser/dns/hive'
+LOCATION '/user/${hiveconf:huser}/dns/hive'
 TBLPROPERTIES ('avro.schema.literal'='{
     "type":   "record"
   , "name":   "DnsRecord"

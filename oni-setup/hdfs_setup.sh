@@ -24,7 +24,7 @@ hive -e "CREATE DATABASE ${DBNAME}"
 
 for d in "${DSOURCES[@]}" 
 do 
-	hive -hiveconf huser=${HUSER} -hiveconf huser=${DBNAME} -f create_${d}_avro_parquet.hql
+	hive -hiveconf huser=${HUSER} -hiveconf dbname=${DBNAME} -f create_${d}_avro_parquet.hql
 done
 
 
