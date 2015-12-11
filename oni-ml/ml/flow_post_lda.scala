@@ -50,7 +50,7 @@ val file = System.getenv("DPATH")
 val topic_mix_file = System.getenv("HPATH") + "/doc_results.csv"
 val pword_file = System.getenv("HPATH")+"/word_results.csv"
 val scored_output_file = System.getenv("HPATH") + "/scored"
-val threshold : Double = system.getenv("TOL").toDouble
+val threshold : Double = System.getenv("TOL").toDouble
 
 
 val cuts_input = System.getenv("CUT")

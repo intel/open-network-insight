@@ -187,8 +187,8 @@ void run_em(char* start, char* directory, corpus* corpus)
 	MPI_Comm_rank(MPI_COMM_WORLD, &myid);
 	MPI_Comm_size(MPI_COMM_WORLD, &pnum);
 
-	int wkr = 12;
-	int wproc = 9;
+	int wkr = 4;
+	int wproc = 5;
 	int nproc = wkr*wproc; //14 * 9
 
     while (((converged < 0) || (converged > EM_CONVERGED) || (i <= 2)) && (i <= EM_MAX_ITER))

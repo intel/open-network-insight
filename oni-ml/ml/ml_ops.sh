@@ -12,7 +12,6 @@ TOL=$6
 # intermediate ML results go in hive directory
 DFOLDER='hive'
 
-
 #  pre-processing scala
 
 source /etc/duxbay.conf
@@ -57,7 +56,7 @@ do
 done
 sleep 2
 cd ${LDAPATH}
-time mpiexec -n 10 -f machinefile ./lda est 2.5 20 settings.txt ../${FDATE}/model.dat random ../${FDATE}
+time mpiexec -n 20 -f machinefile ./lda est 2.5 20 settings.txt ../${FDATE}/model.dat random ../${FDATE}
 sleep 10
 
 cd ${LUSER}/ml
