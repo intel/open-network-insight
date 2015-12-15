@@ -65,6 +65,9 @@ time python lda_post.py ${LPATH}/
 
 # post-processing stage
 source /etc/duxbay.conf
+export DPATH
+export HPATH
+export TOL
 hadoop fs -rm ${HPATH}/doc_results.csv
 hadoop fs -put ${LPATH}/doc_results.csv ${HPATH}/.
 hadoop fs -rm ${HPATH}/word_results.csv
@@ -76,7 +79,7 @@ hadoop fs -rm -R -f ${HPATH}/word_counts
 hadoop fs -rm -R -f ${HPATH}/scored
 
 #kinit -kt /etc/security/keytabs/smokeuser.headless.keytab <user-id>
-time spark-shell --master yarn-client --executor-memory  ${SPK_EXEC_MEM}  --driver-memory 2g --num-executors ${SPK_EXEC} --executor-cores 1 --conf spark.shuffle.io.preferDirectBufs=false --conf shuffle.service.enabled=true --conf spark.driver.maxResultSize="12g" -i scala ${DSOURCE}_post_lda.scala
+time spark-shell --master yarn-client --executor-memory  ${SPK_EXEC_MEM}  --driver-memory 2g --num-executors ${SPK_EXEC} --executor-cores 1 --conf spark.shuffle.io.preferDirectBufs=false --conf shuffle.service.enabled=true --conf spark.driver.maxResultSize="2g"  -i scala ${DSOURCE}_post_lda.scala
 
 hadoop fs -copyToLocal ${HPATH}/scored/part-* ${LPATH}/.
 
