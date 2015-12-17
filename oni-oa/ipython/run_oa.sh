@@ -1,17 +1,7 @@
 #!/bin/bash
 
-while getopts ":s:e:i:o:l:" opt; do
-    case $opt in
-        s) t_start="$OPTARG"
-            ;;
-        e) t_end="$OPTARG"
-            ;;
-        \?) echo "Invalid option -$OPTARG" >&2
-            ;;
-    esac
-done
 LIM=3000
-d="${t_start}"
+ndate= $1
 
 source /etc/duxbay.conf
 EXPORT DBNAME
