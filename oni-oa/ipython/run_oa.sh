@@ -14,10 +14,9 @@ LIM=3000
 d="${t_start}"
 
 source /etc/duxbay.conf
-EXPORT DBNAME
-EXPORT DSOURCE
-EXPORT LUSER
-EXPORT LIM
+export DBNAME
+export DSOURCE
+export LUSER
 
 echo "executing ops for date: $ndate"
 echo `python27 lda_ranking.py --date $ndate --user ${LUSER} --ifile ${DSOURCE}_results.csv --ofile ${DSOURCE}_scores.csv --limit ${LIM}`

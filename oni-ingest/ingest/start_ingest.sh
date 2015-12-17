@@ -7,6 +7,11 @@
 INGEST_TYPE=$1
 WORKER_NUM=${2:-0}
 
+source etc/duxbay.conf
+export HUSER
+export DBNAME
+
+
 if [ -z $INGEST_TYPE  ]; then
 
     echo "Please provide an ingest type (e.g. flow|dns)"

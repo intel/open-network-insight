@@ -116,11 +116,19 @@ def process_new_binary_file(new_file):
 
 	print load_avro_cmd
 	subprocess.call(load_avro_cmd,shell=True)
+	
+	#run ml_train
+	train_ml_cmd = "../ml/./ml_score.sh {0} {1}/{2}.csv {3} {4}".format(os.getenv('MLDATE'),h_stage_path,file_name,ingest_type,os.getenv('TOL','1e-6')
 
+	print load_avro_cmd
+	subprocess.call(load_avro_cmd,shell=True)
+	
 	#remove from stage
 	rm_tmp_cmd = "hadoop fs -rm -R -skipTrash {0}".format(h_stage_path)
 	print rm_tmp_cmd
 	subprocess.call(rm_tmp_cmd,shell=True)
+	
+	
 
 	#can this delete other files when all is running on the same edge server?
 	rm_tmp = "rm ../stage/{0}*".format(file_name)
