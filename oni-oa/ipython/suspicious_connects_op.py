@@ -8,7 +8,7 @@ from subprocess import check_output
 def main():
     sdate = ''
     spath = '{0}/ipython/user/{1}/'
-    scores_f = os.environ['DSOURCE']+"_scores.csv"
+    scores_f = os.environ['DSOURCE']+"_incr_scores.csv"
     userDir = ''
     topct = 500
     try:

@@ -108,7 +108,7 @@ def main():
     user_dir = ''
     dns_config = None
     flow_config = None
-    lda_file_name= 'lda_scores.csv'
+    lda_file_name= 'flow_scores.csv'
 
     try:
         opts, args = getopt.getopt(sys.argv[1:], 'hd:u:f', ["help", "date=", "user=","file=", 'flow', 'dns'])

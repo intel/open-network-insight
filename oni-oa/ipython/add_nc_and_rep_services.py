@@ -163,13 +163,13 @@ def main():
     lda_temp = sconnects_path 
     
     if flow:
-        lda_file += 'flow_scores.csv'
-        lda_bu += 'flow_scores_bu.csv'
-        lda_temp += 'flow_scores_temp.csv'
+        lda_file += 'flow_incr_scores.csv'
+        lda_bu += 'flow_incr_scores_bu.csv'
+        lda_temp += 'flow_incr_scores_temp.csv'
     elif dns:
-        lda_file += 'dns_scores.csv'
-        lda_bu += 'dns_scores_bu.csv'
-        lda_temp += 'dns_scores_temp.csv'
+        lda_file += 'dns_incr_scores.csv'
+        lda_bu += 'dns_incr_scores_bu.csv'
+        lda_temp += 'dns_incr_scores_temp.csv'
 
     gti_command = (rest_client_path + ' -s '+ gti_server 
                   + ' -q \'{"ci":{"cliid":"87d8d1082c2f2f821f438b2359b7a5b4", "prn":"Duxbury", "sdkv":"1.0", "pv":"1.0.0", "pev":1, "rid":1, "affid":"0"},"q":[{"op":"ip","ip":"###IP###"}]}\''

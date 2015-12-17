@@ -10,6 +10,7 @@ WORKER_NUM=${2:-0}
 source etc/duxbay.conf
 export HUSER
 export DBNAME
+export MLDATE
 
 
 if [ -z $INGEST_TYPE  ]; then

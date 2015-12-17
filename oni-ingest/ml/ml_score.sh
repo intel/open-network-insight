@@ -12,6 +12,7 @@ export HPATH
 export LUSER
 export TOL
 export KRB_AUTH
+export MLDATE
 
 DPATH=$2
 
