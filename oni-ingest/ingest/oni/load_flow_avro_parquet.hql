@@ -12,7 +12,6 @@ DROP TABLE IF EXISTS ${hiveconf:dbname}.flow_tmp
 
 CREATE EXTERNAL TABLE ${hiveconf:dbname}.flow_tmp (
   treceived STRING,
-  dur FLOAT,
   tryear INT,
   trmonth INT,
   trday INT,
@@ -81,7 +80,7 @@ TBLPROPERTIES ('avro.schema.literal'='{
 
 INSERT INTO TABLE ${hiveconf:dbname}.flow
 PARTITION (y=${hiveconf:y}, m=${hiveconf:m}, d=${hiveconf:d}, h=${hiveconf:h})
-SELECT   treceived,  unix_timestamp(treceived) AS unix_tstamp,  dur, tryear,  trmonth, trday,  trhour,  trminute,  trsec,
+SELECT   treceived,  unix_timestamp(treceived) AS unix_tstamp, tryear,  trmonth, trday,  trhour,  trminute,  trsec,
   tdur,  sip, dip, sport, dport,  proto,  flag,  fwd,  stos,  ipkt,  ibyt,  opkt,  obyt,  input,  output,
   sas,  das,  dtos,  dir,  rip
  FROM ${hiveconf:dbname}.flow_tmp
