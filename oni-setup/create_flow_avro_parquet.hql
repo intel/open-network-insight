@@ -4,7 +4,6 @@ SET hiveconf:dbname;
 CREATE EXTERNAL TABLE IF NOT EXISTS ${hiveconf:dbname}.flow (
   treceived STRING,
   unix_tstamp BIGINT,
-  dur FLOAT,
   tryear INT,
   trmonth INT,
   trday INT,
