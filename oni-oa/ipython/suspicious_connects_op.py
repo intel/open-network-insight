@@ -119,10 +119,9 @@ def main():
                 hivestr = (" \"set hive.cli.print.header=true; SELECT sip as srcip," +
                 "dip as dstip, MAX(ibyt) as maxbyte, AVG(ibyt) as avgbyte,  MAX(ipkt) as maxpkt, AVG(ipkt) as avgpkt " +
                 " from " + "os.environ['DBNAME']" + "." + os.environ['DSOURCE']  +  
-                " WHERE m="+mh+" AND d="+dy+" AND ( (sip=\'" + ip + "\' AND dip IN("+ dstip[:-1] + ")"
+                " WHERE m="+mh+" AND d="+dy+" AND ( (sip=\'" + ip + "\' AND dip IN("+ dstip[:-1] + ")" +
                 " OR sip IN(" + dstip[:-1] + ") AND dip=\'" + ip + "\') ) " +
-                " GROUP BY sip,dip \"  > " + spath + "chord-" + ip.replace(".","_") + ".tsv")
-                disp.clear_output()
+                " GROUP BY sip,dip \"  > " + spath + "chord-" + ip.replace(".","_") + ".tsv")                
                 print 'processing line ',ipct
                 print hivestr
                 #call(["hive", "-S", "-e", hivestr])
