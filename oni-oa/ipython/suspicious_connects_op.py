@@ -63,8 +63,8 @@ def main():
     
         hivestr = (" \"set hive.cli.print.header=true; SELECT treceived as tstart,sip as srcip," +
         "dip as dstip,sport as sport,dport as dport,proto as proto,flag as flags,stos as TOS," +
-        "ibyt as bytes, ipkt as pkts,input as input, output as output "
-         " from " + "os.environ['DBNAME'] + "." os.environ['DSOURCE']  +  
+        "ibyt as bytes, ipkt as pkts,input as input, output as output, rip as rip " +
+         " from " + "os.environ['DBNAME']" + "." + os.environ['DSOURCE']  +  
         " WHERE ( (sip=\'" + sip + "\' AND dip=\'" + dip + "\') OR " +
         "(sip=\'" + dip + "\' AND dip=\'" + sip + "\') ) AND m="+mh+" AND d="+dy+" AND h="+hr +
         " AND trminute="+mm +" SORT BY unix_tstamp LIMIT 100; \"  > " + spath+ "edge-" + sip.replace(".","_") + "-" + 
@@ -118,7 +118,7 @@ def main():
                 dstip = "'%s',"*len(dstdict.keys()) % tuple(dstdict.keys())
                 hivestr = (" \"set hive.cli.print.header=true; SELECT sip as srcip," +
                 "dip as dstip, MAX(ibyt) as maxbyte, AVG(ibyt) as avgbyte,  MAX(ipkt) as maxpkt, AVG(ipkt) as avgpkt " +
-                " from " + "os.environ['DBNAME'] + "." os.environ['DSOURCE']  +  
+                " from " + "os.environ['DBNAME']" + "." + os.environ['DSOURCE']  +  
                 " WHERE m="+mh+" AND d="+dy+" AND ( (sip=\'" + ip + "\' AND dip IN("+ dstip[:-1] + ")"
                 " OR sip IN(" + dstip[:-1] + ") AND dip=\'" + ip + "\') ) " +
                 " GROUP BY sip,dip \"  > " + spath + "chord-" + ip.replace(".","_") + ".tsv")
