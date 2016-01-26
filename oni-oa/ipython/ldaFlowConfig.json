@@ -47,5 +47,27 @@
 		"ibyt":9,
 		"lda_score":10,
 		"rank":11
-	}
+	},
+	"scoring_rules":[
+		{
+			"rops": ["leq","leq","leq","leq","leq","leq"],
+			"rvals": ["","","",1024,"",54],
+			"risk": 2
+		},
+		{
+			"rops": ["leq","leq","leq","leq","eq","eq"],
+			"rvals": ["","","",1024,3,152],
+			"risk": 2
+		},
+		{
+			"rops": ["leq","leq","leq","leq","eq","eq"],
+			"rvals": ["","","",1024,2,104],
+			"risk": 2			
+		},
+		{
+			"rops" : ["leq","leq","eq","leq","leq","leq"],
+    		"rvals" : ["","",0,1023,"",""],
+    		"risk" : 2
+		}
+	]
 }
