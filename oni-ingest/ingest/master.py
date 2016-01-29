@@ -35,8 +35,8 @@ def start_ingest(data_type):
 	ingest = None
 
 	if os.getenv('KRB_AUTH'):
-                kb = Kerberos()
-                kb.authenticate()
+		kb = Kerberos()
+		kb.authenticate()
 
 	if data_type == "dns":
 		ingest = dns_ingest(ingest_conf['dns'])
@@ -44,7 +44,7 @@ def start_ingest(data_type):
 		ingest = flow_ingest(ingest_conf['flow'])
 	else:
 		print "Ingest type '{0}' is not supported".format(data_type)
-                sys.exit(1)
+		sys.exit(1)
 
 	# start the ingest.
 	ingest.start()
