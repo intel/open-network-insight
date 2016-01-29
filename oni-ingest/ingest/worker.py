@@ -22,11 +22,11 @@ def main():
 
 
 	# input parameters
-    parser = argparse.ArgumentParser(description="Worker Ingest Framework")
-    parser.add_argument('-t','--type',dest='type',required=True,help='Type of data that will be ingested (e.g. dns, flow)',metavar='')
-    args = parser.parse_args()
-
-    start_worker(args.type)
+	parser = argparse.ArgumentParser(description="Worker Ingest Framework")
+	parser.add_argument('-t','--type',dest='type',required=True,help='Type of data that will be ingested (e.g. dns, flow)',metavar='')
+	args = parser.parse_args()
+	
+	start_worker(args.type)
 
 def start_worker(data_type):
 
@@ -52,7 +52,7 @@ def start_file_watcher(ingest_type):
 	channel = connection.channel()
 
 	queue_name = worker_conf[ingest_type]['queue_name']
-    print "Listening server {0}, queue:{1}".format(rabbitmq_server,queue_name)
+	print "Listening server {0}, queue:{1}".format(rabbitmq_server,queue_name)
 
 	channel.queue_declare(queue=queue_name)
 	channel.basic_consume(new_file_found,queue=queue_name)
@@ -86,8 +86,8 @@ def process_new_binary_file(new_file):
 	elif ingest_type == 'flow':
 		post_process_cmd = "nfdump -o csv -r ../stage/{0} {1} > ../stage/{0}.csv".format(file_name,process_opt)
         else:
-            print "Unsupported ingest type"
-            sys.exit(1)
+        	print "Unsupported ingest type"
+        	sys.exit(1)
 
 	print post_process_cmd
 	subprocess.call(post_process_cmd,shell=True)
@@ -105,16 +105,16 @@ def process_new_binary_file(new_file):
 	subprocess.call(upld_cmd,shell=True)
 
 	#make tmp folder in stage
-    h_stage_timestamp = datetime.datetime.now().strftime('%M%S%f')[:-4]
+	h_stage_timestamp = datetime.datetime.now().strftime('%M%S%f')[:-4]
 	h_stage_path =  "{0}/stage/{1}".format(h_base_path,h_stage_timestamp)
 	create_tmp_cmd = "hadoop fs -mkdir -p {0}".format(h_stage_path)
 	print create_tmp_cmd
 	subprocess.call(create_tmp_cmd,shell=True)
 
-    # move to stage.
-    mv_to_stage = "hadoop fs -cp {0}/y={1}/m={2}/d={3}/h={4}/{5}.csv {6}/.".format(h_csv_path,binary_year,binary_month,binary_day,binary_hour,file_name,h_stage_path)
-    print mv_to_stage
-    subprocess.call(mv_to_stage,shell=True)
+	# move to stage.
+	mv_to_stage = "hadoop fs -cp {0}/y={1}/m={2}/d={3}/h={4}/{5}.csv {6}/.".format(h_csv_path,binary_year,binary_month,binary_day,binary_hour,file_name,h_stage_path)
+	print mv_to_stage
+  	subprocess.call(mv_to_stage,shell=True)
 
 	#load to avro
 	load_avro_cmd = "hive -hiveconf dbname={6} -hiveconf y={0} -hiveconf m={1} -hiveconf d={2} -hiveconf h={3} -hiveconf data_location='{4}' -f oni/load_{5}_avro_parquet.hql".format(binary_year,binary_month,binary_day,binary_hour,h_stage_path,ingest_type,os.getenv('DBNAME','default') )
