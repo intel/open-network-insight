@@ -24,7 +24,7 @@ class Kerberos(object):
 		self._krb_user =  os.getenv('KRB_USER')
 
 
-                if self._kint == None or self._kinitopts == None or self._keytab == None or self._krb_user == None:
+                if self._kinit == None or self._kinitopts == None or self._keytab == None or self._krb_user == None:
                         print "Please verify kerberos configuration, some environment variables are missing."
                         sys.exit(1)
 
@@ -39,5 +39,3 @@ class Kerberos(object):
 				print error.rstrip()
 				sys.exit(kinit.returncode)
 		print "Successfully authenticated!"
-
-
