@@ -81,13 +81,14 @@ def process_new_binary_file(new_file):
 	# build process cmd.
 	post_process_cmd = None
 	process_opt = worker_conf[ingest_type]['process_opt']
+	
 	if ingest_type == 'dns':
 		post_process_cmd = "tshark -r ../stage/{0} {1} >> ../stage/{0}.csv".format(file_name,process_opt)
 	elif ingest_type == 'flow':
 		post_process_cmd = "nfdump -o csv -r ../stage/{0} {1} > ../stage/{0}.csv".format(file_name,process_opt)
-        else:
-        	print "Unsupported ingest type"
-        	sys.exit(1)
+	else:
+		print "Unsupported ingest type"
+		sys.exit(1)
 
 	print post_process_cmd
 	subprocess.call(post_process_cmd,shell=True)
