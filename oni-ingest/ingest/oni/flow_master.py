@@ -92,9 +92,9 @@ class new_file(FileSystemEventHandler):
 		if not event.is_directory:
 			self._flow_instance.load_new_file(event.dest_path)
 
-    def on_created(self,event):
-        if not event.is_directory:
-            self._flow_instance.load_new_file(event.src_path)
+    	def on_created(self,event):
+        	if not event.is_directory:
+        		self._flow_instance.load_new_file(event.src_path)
 
 
 
