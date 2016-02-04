@@ -43,6 +43,24 @@
         .small-text {
             font-size: small;
         }
+
+        .node circle {
+            fill: #fff;
+            stroke: steelblue;
+            stroke-width: 1.5px;
+        }
+
+        .node {
+            font: 10px sans-serif;
+        }
+
+        .link {
+            fill: none;
+            stroke: #ccc;
+            stroke-width: 1.5px;
+        }
+
+
         /*===========================================================================*/
         /*TOOL TIP*/
         /*===========================================================================*/
@@ -53,12 +71,12 @@
             padding: 5px;
             border: 1px solid #B1BABF;
             border-radius: 5px;
-            position: absolute;            
+            position: absolute;
             z-index: 10;
             visibility: hidden;
             pointer-events: none;
-            height:auto;
-            font-size:small;
+            height: auto;
+            font-size: small;
         }
 
             #tooltip p {
@@ -137,199 +155,101 @@
             });
         }
 
-
-        function chord(csvfile, ip) {
-            chordCsvPath = csvfile;
-            gip = ip;
-            var numberFormat = d3.format(".3s");
-
-            //*******************************************************************
-            //  CREATE MATRIX AND MAP
-            //*******************************************************************
-            d3.tsv(csvpath + csvfile, function (error, data) {
-
-                //var f_data = data.filter(function (d) { return d.maxbyte > 0 });
-
-                var mpr = chordMpr(data);
-
-                mpr.addValuesToMap('srcip')
-                  .addValuesToMap('dstip')
-                  .setFilter(function (row, a, b) {
-                      return (row.srcip === a.name && row.dstip === b.name)
-                  })
-                  .setAccessor(function (recs, a, b) {
-                      if (!recs[0]) {
-                          return 0;
-                      }
-                      return +recs[0].maxbyte;
-                  });
-                drawChords(mpr.getMatrix(), mpr.getMap(), gip);
-            });
-
-            function drawChords(matrix, mmap) {
-                // generate chord layout
-                var chord = d3.layout.chord()
-                    .padding(.05)
-                    .sortSubgroups(d3.descending)
-                    .matrix(matrix);
-                var rdr = chordRdr(matrix, mmap);
-                // Graph dimensions
-                var width = $("#container").width(),
-                    height = $("#container").height(),
-                    innerRadius = Math.min(width, height) * .41, //.41 is a magic number for graph stilyng purposes
-                    outerRadius = innerRadius * 1.1; //1.1 is a magic number for graph stilyng purposes
-
-                var fill = d3.scale.ordinal()
-                        .domain(d3.range(4))
-                        .range(["#F3D54E", "#00AEEF", "#C4D600", "#FC4C02", "#FFA300"]);
-
-                var dragB = d3.behavior.drag()
-	                    .on('drag', drag);
-
-                //Clean the container div to re-draw the diagram
-                d3.select("#container").html("")
-                    .style("overflow-y", "hidden");
-
-                // Main SVG
-                var svg = d3.select("#container").append("svg")
-                    .attr("width", width)
-                    .attr("height", height)
-                  .append("g")
-                    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
-                    .call(dragB);
-
-                // Appending the chord paths
-                var groups = svg.selectAll("g.group")
-                .data(chord.groups())
-              .enter().append("svg:g")
-                .attr("class", "group")                                    
-                    .on("mouseover", function (d, i) {
-
-                        var chord = svg.selectAll(".chord path").data().filter(function (d) { return (d.source.index == i || d.target.index == i);});
-
-                        d3.select("#tooltip")
-                        .style("visibility", "visible")
-                        .html(groupTip(rdr(d)) + chordTip(rdr(chord[0])))
-                        .style("top","5px")
-                        .style("left", "5px");
-
-                        svg.selectAll(".chord path")
-                          .filter(function (d) { return d.source.index != i && d.target.index != i; })
-                        .transition()
-                          .style("opacity", 0.1);
-                    })
-                    .on("mouseout", function () {
-                        d3.select("#tooltip")
-                       .style("visibility", "hidden");
-
-                        fade(1)();
+        function getAnswers(dnsRecord) {
+            if (dnsRecord.answers === "-") {
+                return [{ name: dnsRecord.rcode_name, children: [] }]
+            }
+            else {
+                var asnwersArray = dnsRecord.answers.split("|")
+                var nodes = []
+                asnwersArray.forEach(function (answer) {
+                    nodes.push({
+                        name: answer,
+                        children: []
                     });
-
-                groups.append("svg:path")
-                   .style("stroke", "black")
-                   .style("fill", function (d) { return fill(d.index); })
-                   .style("cursor", "pointer")
-                   .attr("d", d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius));
-
-                //grouping and appending the Chords
-                svg.append("g")
-                    .attr("class", "chord")
-                  .selectAll("path")
-                    .data(chord.chords())
-                  .enter().append("path")
-                    .attr("d", d3.svg.chord().radius(innerRadius))
-                    .style("fill", function (d) { return fill(d.target.index); })
-                    .style("opacity", 1);
-                    //.on("mouseover", function (d, i) {
-                    //    svg.selectAll(".chord path")
-                    //      .filter(function (d) { return d.source.index != i && d.target.index != i; })
-                    //    .transition()
-                    //      .style("opacity", 0.1);
-
-                    //    d3.select("#tooltip")
-                    //      .style("visibility", "visible")
-                    //      .html(chordTip(rdr(d)))
-                    //      .style("top", function () { return (d3.event.pageY + 5) + "px" })
-                    //      .style("left", function () { return (d3.event.pageX + 5) + "px"; });
-                        
-                    //})
-                    //.on("mouseout", function () {
-                    //    d3.select("#tooltip")
-                    //   .style("visibility", "hidden");
-
-                    //    fade(1)();
-                    //});
-
-               groups.append("svg:text")
-                   .each(function (d) { d.angle = (d.startAngle + d.endAngle) / 2; })
-                   .attr("dy", ".35em")
-                   .style("font-family", "helvetica, arial, sans-serif")
-                   .style("font-size", "12px")
-                   .style("cursor", "pointer")
-                   .style("font-weight", function (d) {
-                       var _d = rdr(d);
-                       if (_d.gname == gip) {
-                           return "900";
-                       }
-                       return "normal";
-                   })
-                   .attr("text-anchor", function (d) { return d.angle > Math.PI ? "end" : null; })
-                   .attr("transform", function (d) {
-                       return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")"
-                           + "translate(" + (innerRadius * 1.15) + ")"
-                           + (d.angle > Math.PI ? "rotate(180)" : "");
-                   })
-                   .text(function (d) {
-                       var _d = rdr(d);
-                       if (_d.gvalue / _d.mtotal > 0.005 || _d.gname == gip || matrix.length <= 10) {
-                           return _d.gname;
-                       }
-                   });
-
-                // Returns an event handler for fading a given chord group.
-                function fade(opacity, fnMouseover) {
-                    return function (d, i) {
-                        svg.selectAll(".chord path")
-                            .filter(function (d) { return d.source.index != i && d.target.index != i; })
-                          .transition()
-                            .style("opacity", opacity);
-                        if (fnMouseover) {
-                            fnMouseover();
-                        }
-                    };
-                }
-               
-                function chordTip(d) {
-                    var p = d3.format(".4%"), q = d3.format(",.3r")
-                    return "<br/>Chord Info:<br/>"
-                      + numberFormat(d.svalue) + " avg bytes from IP: "
-                      + d.sname + " to IP: " + d.tname
-                      + (d.sname === d.tname ? "" : ("<br/>while...<br/>"
-                      + numberFormat(d.tvalue) + " avg bytes From IP: "
-                      + d.tname + " to IP: " + d.sname))
-                }
-
-                function groupTip(d) {
-                    var p = d3.format(".4%"), q = d3.format(",.3r")
-                    return "Group Info:<br/>"
-                        + d.gname + " : " + numberFormat(d.gvalue) + " Avg Bytes <br/>"
-                        + p(d.gvalue / d.mtotal) + " of Matrix Total (" + numberFormat(d.mtotal) + ")"
-                }
-
-                function drag() {
-                    var x1 = width / 2
-                        , y1 = height / 2
-                        , x2 = d3.event.x
-                        , y2 = d3.event.y;
-
-                    var newAngle = Math.atan2(y2 - y1, x2 - x1) / (Math.PI / 180);
-
-                    d3.select("svg > g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ") rotate(" + newAngle + ",0,0)");
-
-                }
+                });
+                return nodes;
             }
         }
-     
+
+        function dendro(csvfile, ipsrc) {
+
+            var diagonal = d3.svg.diagonal()
+                .projection(function (d) {
+                    return [d.x, d.y]
+                });
+
+            var width = $("#container").width(),
+                height = $("#container").height();
+
+            var cluster = d3.layout.cluster()
+                .size([height, width - 500]);
+
+            var diagonal = d3.svg.diagonal()
+                .projection(function (d) { return [d.y, d.x]; });
+
+            var svg = d3.select("#container").append("svg")
+                .attr("width", width)
+                .attr("height", height)
+                .append("g")
+                .attr("transform", "translate(" + 200 + ", 0)");
+            
+
+            d3.csv(csvfile, function (error, data) {
+                if (error) throw error;
+                var root = {
+                    name: ipsrc,                    
+                    children: []
+                }
+                data.forEach(function (d) {
+                    if (d.id_orig_h == root.name) {
+                        var repeated = root.children.filter(function (c) { return c.query == d.query });
+
+                        if (repeated.length > 0) {
+                            root.children.forEach(function (child) {
+                                if (child.name == repeated[0].query) {
+                                    child.count += 1;
+                                }
+                            })
+                        }
+                        else {
+                            root.children.push({
+                                name: d.query,
+                                count: 0,
+                                children: getAnswers(d)
+                            });
+                        }
+                    }
+                });
+
+                var nodes = cluster.nodes(root);
+                var links = cluster.links(nodes);
+
+                var link = svg.selectAll(".link")
+                    .data(links)
+                    .enter().append("path")
+                    .attr("class", "link")
+                    .attr("d", diagonal);
+
+                var node = svg.selectAll(".node")
+                    .data(nodes)
+                    .enter().append("g")
+                    .attr("class", "node")
+                    .attr("transform", function (d) { return "translate(" + d.y + "," + d.x + ")"; });
+
+                node.append("circle")
+                    .attr("r", 4.5);
+
+                node.append("text")
+                    .attr("dx", function (d) { return d.children ? -8 : 8; })
+                    .attr("dy", 3)
+                    .style("text-anchor", function (d) { return d.children ? "end" : "start" })
+                    .text(function (d) { return d.name; });
+            });
+
+
+        }
+
         function getQueryString() {
             var queryStringKeyValue = window.parent.location.search.replace('?', '').split('&');
             var qsJsonObject = {};
@@ -345,13 +265,13 @@
             DOCUMENT Ready
         */
         $(function () {
-
+            dendro("dataset/dns_test.csv", "10.121.232.38");
             /* if we detect a resize then we need to re-draw the graph to fit the new container size*/
             $(window).resize(function () {
                 if ($('#container > svg').length > 0) {
                     $("#container").html("");
-                    chord(chordCsvPath,gip);
                 }
+                dendro("dataset/dns_test.csv", "10.121.232.38");
             });
 
         });
