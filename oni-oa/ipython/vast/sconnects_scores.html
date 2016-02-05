@@ -240,12 +240,10 @@
                      if ( isSrcIpInternal || isDstIpInternal) {
 
                          var html = d.value + ' <i class="fa fa-globe float-right ip-info"></i>';                               
-                         var shieldClass = "low-risk";
-                         var norseRisk = 0
+                         var shieldClass = "low-risk";                       
                          var gtiRisk = 0;
 
-                         if (isSrcIpInternal) {
-                             norseRisk = d.row.norseSrcRep == undefined ? '' : norseRisks[d.row.norseSrcRep.toLowerCase()];
+                         if (isSrcIpInternal) {                            
                              gtiRisk = gtiRisks.low;
                              if (d.row.gtiSrcRep != "" && d.row.gtiSrcRep != undefined && d.row.gtiSrcRep != null && (d.row.gtiSrcRep.indexOf('error') == -1)) {
                                  if (+d.row.gtiSrcRep >= 30 && +d.row.gtiSrcRep <= 49) {
@@ -257,8 +255,7 @@
                              }
                          }
 
-                         if (isDstIpInternal) {
-                             norseRisk = d.row.norseDstRep == undefined ? '' : norseRisks[d.row.norseDstRep.toLowerCase()];
+                         if (isDstIpInternal) {                             
                              gtiRisk = gtiRisks.low;
                              if (d.row.gtiDstRep != "" && d.row.gtiDstRep != undefined && d.row.gtiDstRep != null && (d.row.gtiDstRep.indexOf('error') == -1)) {
                                  if (+d.row.gtiDstRep >= 30 && +d.row.gtiDstRep <= 49) {
@@ -269,16 +266,9 @@
                                  }
                              }
                          }
-
-                         norseRisk = norseRisk || 0
+                        
                          gtiRisk = gtiRisk || 0
-
-                         if (norseRisk > gtiRisk)
-                             shieldClass = Object.keys(norseRisks)[norseRisk] + "-risk";
-                         else if (norseRisk < gtiRisk)
-                             shieldClass = Object.keys(gtiRisks)[gtiRisk] + "-risk";
-                         else
-                             shieldClass = Object.keys(norseRisks)[norseRisk] + "-risk";
+                         shieldClass = Object.keys(gtiRisks)[gtiRisk] + "-risk";
 
                          html += ' <i class="fa fa-shield float-right reputation ip-info '+shieldClass+'"></i>';
                          return html;
@@ -360,34 +350,10 @@
                         gtiText = "Risk undefined";
                         gtiClass = 'label label-default';
                     }
-
-                    if (norseReputation != "" && norseReputation != undefined && norseReputation != null && (norseReputation.indexOf('error') == -1)) {
-                        if (norseReputation.toLowerCase() == Object.keys(norseRisks)[norseRisks.low]) {
-                            norseText = "Low";
-                            norseClass = 'label label-default';
-                        }
-                        else if (norseReputation.toLowerCase() == Object.keys(norseRisks)[norseRisks.medium]) {
-                            norseText = "Medium";
-                            norseClass = 'label label-warning';
-                        }
-                        else if (norseReputation.toLowerCase() == Object.keys(norseRisks)[norseRisks.high]) {
-                            norseText = "High";
-                            norseClass = 'label label-danger';
-                        }
-                        else if (norseReputation.toLowerCase() == Object.keys(norseRisks)[norseRisks.extreme]) {
-                            norseText = "Extreme";
-                            norseClass = 'label label-danger label-extreme';
-                        }
-                    }
-                    else {
-                        norseText = "Risk undefined";
-                        norseClass = 'label label-default';
-                    }
-
+                   
                     var html = '<div class="col-md-12">';
 
-                    html += '<p>GTI: <span class="'+gtiClass+'">' + gtiText + '</span></p>';
-                    html += '<p>Norse: <span class="' + norseClass + '">' + norseText + '</span></p>';
+                    html += '<p>GTI: <span class="'+gtiClass+'">' + gtiText + '</span></p>';                    
                     html += "</div>";
                     d3.select("#tooltip")
                         .html(html)
